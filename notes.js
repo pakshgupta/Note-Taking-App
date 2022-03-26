@@ -1,7 +1,8 @@
 // When user enter the notes add it to local storege
-let addnotes = document.getElementById("addBtn");
 DisplayNotes();
+let addnotes = document.getElementById("addBtn");
 addnotes.addEventListener("click", function (e) {
+  let addTitle=document.getElementById("addTitle");
   let addTxt = document.getElementById("addTxt");
   let notes = localStorage.getItem("notes");
   if (notes == null) {
@@ -9,10 +10,16 @@ addnotes.addEventListener("click", function (e) {
   } else {
     notesObj = JSON.parse(notes);
   }
-  notesObj.push(addTxt.value); //  update notes that user enter
+  let myObj={              // creating object for getting title and notes
+    title: addTitle.value,
+    text: addTxt.value
+  }
+
+  notesObj.push(myObj); //  update title and notes that user enter
   localStorage.setItem("notes", JSON.stringify(notesObj)); // update user notes to local storage
+  addTitle.value =""; //clear addTitle after adding title
   addTxt.value = ""; //clear addTxt after adding text
-  console.log(notesObj);
+  // console.log(notesObj);
   DisplayNotes();
 });
 
@@ -31,8 +38,8 @@ function DisplayNotes() {
     html += `  
         <div class="notesCard my-2 mx-2 card" style="width: 18rem">
           <div class="card-body">
-            <h5 class="card-title">Notes ${index + 1}</h5>  
-            <p class="card-text"> ${element}
+            <h5 class="card-title"> ${element.title}</h5>  
+            <p class="card-text"> ${element.text}
             </p>
             <button id="${index}" onclick="deleteNotes(this.id)" class="btn btn-primary">Delete</button>
           </div>
